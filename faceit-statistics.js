@@ -1,6 +1,7 @@
 // ==UserScript==
-// @name         Faceit API Request
+// @name         FACEIT Statistics
 // @namespace    http://tampermonkey.net/
+// @homepage     https://github.com/raizano/FACEIT-Statistics/
 // @version      2023-12-23
 // @description  Make a Faceit API request and display statistics on Steam profile
 // @author       raizano
@@ -14,7 +15,7 @@
 
     const API_SEARCH_URL = "https://api.faceit.com/search/v1/?limit=5&query=";
     const API_PLAYER_URL = "https://open.faceit.com/data/v4/players/";
-    const API_KEY = "0daa5265-fe8f-49fe-9d8b-14803b85603a";
+    const API_KEY = "ENTER-API-KEY-FACEIT";
 
     const STYLES = `
         .faceit-stats {
