@@ -27,10 +27,10 @@ Faceit Stats for Steam - это расширение для Tampermonkey, кот
    - Статистика Faceit будет автоматически добавлена на страницу, где вы увидите ваш уровень навыков и рейтинг ELO.
 
 <details>
-  <summary>Подробнее</summary>
+  <summary>Тык</summary>
   
   <!-- Дополнительная информация о проекте -->
-  ...
+  шо подглядываем?
 
 </details>
 
@@ -39,12 +39,7 @@ Faceit Stats for Steam - это расширение для Tampermonkey, кот
   <img src="https://example.com/your-image.png" alt="Your Image">
 </div>
 
-## Использованные технологии
-
-- JavaScript
-- Tampermonkey
-- GM_xmlhttpRequest
 
 ## Лицензия
 
-Этот проект лицензирован под [лицензией MIT](LICENSE).
+Этот проект лицензирован под [лицензией GNU](LICENSE).
