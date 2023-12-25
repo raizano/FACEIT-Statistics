@@ -2,7 +2,7 @@
 // @name         FACEIT Statistics for Steam
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/raizano/FACEIT-Statistics/
-// @version      1.4.2
+// @version      1.4.4
 // @description  Интеграция статистики Faceit в профиль Steam
 // @author       raizano
 // @match        https://steamcommunity.com/*
