@@ -3,40 +3,40 @@
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/raizano/FACEIT-Statistics/
 // @version      1.4.2
-// @description  Integrates Faceit statistics into the Steam profile
+// @description  Интеграция статистики Faceit в профиль Steam
 // @author       raizano
 // @match        https://steamcommunity.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=faceit.com
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
+/**
+ * Класс, представляющий интеграцию статистики Faceit в профиль Steam.
+ */
 class FaceitStats {
   API_SEARCH_URL = "https://api.faceit.com/search/v1/?limit=5&query=";
   API_PLAYER_URL = "https://open.faceit.com/data/v4/players/";
   FACEIT_TOKEN_API = "FACEIT_TOKEN_API"; 
   STYLES = `.faceit-stats {display: flex;flex-direction: column;margin-bottom: 10px;} .faceit-stats-header {font-size: 250%;font-weight: bold;} .faceit-stats-item {font-size: 16px;display: flex;align-items: center;} .faceit-stats-item span {margin-left: 5px;} .faceit-stats-icon {position: relative;top: 3px;} .faceit-stats-icon img {width: 28px;height: 28px;} .faceit-error {background-color: #ffe0e0;padding: 10px;margin-bottom: 10px;border: 1px solid #ff6666;border-radius: 8px;font-family: 'Arial', sans-serif;font-size: 14px;color: #ff3333;}`;
 
-  Messages = {
-    playerNotFound: {
-      en: "Player not found on Faceit",
-      ru: "Игрок не найден на Faceit",
-    },
-    steamIdError: {
-      en: "Error getting Steam ID from the page.",
-      ru: "Ошибка получения Steam ID со страницы.",
-    },
-    faceitApiError: {
-      en: "Error executing Faceit API request",
-      ru: "Ошибка выполнения запроса к Faceit API",
-    },
-  };
-
+  /**
+   * Добавляет необходимые стили для статистики Faceit на страницу.
+   */
   addStyles() {
+    if (document.querySelector('#faceit-stats-styles')) {
+      return;
+    }
+
     const styleElement = document.createElement("style");
+    styleElement.id = 'faceit-stats-styles';
     styleElement.textContent = this.STYLES;
     document.head.appendChild(styleElement);
   }
 
+  /**
+   * Получает Steam ID из текущего URL страницы.
+   * @returns {string} Steam ID.
+   */
   getSteamId() {
     const url = new URL(window.location.href);
     const steamId =
@@ -44,21 +44,34 @@ class FaceitStats {
       url.pathname.replace(/^\/profiles\//, '') ||
       null;
 
-    if (!steamId) console.error(this.Messages.steamIdError[this.getLocale()]);
+    if (!steamId) {
+      console.error(this.Messages.steamIdError[this.getLocale()]);
+    }
 
     return steamId;
   }
 
+  /**
+   * Промисифицирует функцию GM_xmlhttpRequest.
+   * @param {Object} options - Опции запроса.
+   * @returns {Promise} Промис, разрешающийся ответом от API.
+   */
   promisifiedGMRequest(options) {
     return new Promise((resolve, reject) => {
       GM_xmlhttpRequest({
         ...options,
-        onload: resolve,
-        onerror: reject,
+        onload: (response) => resolve(response),
+        onerror: (error) => reject(error),
       });
     });
   }
 
+  /**
+   * Делает запрос к Faceit API с использованием GM_xmlhttpRequest.
+   * @param {string} url - URL конечной точки API.
+   * @param {Object} options - Опции запроса.
+   * @returns {Promise} Промис, разрешающийся ответом от API.
+   */
   async makeFaceitAPIRequest(url, options) {
     try {
       const response = await this.promisifiedGMRequest({
@@ -73,6 +86,12 @@ class FaceitStats {
     }
   }
 
+  /**
+   * Ищет игрока Faceit по Steam ID.
+   * @param {string} steamId - Steam ID игрока.
+   * @returns {string} Faceit GUID игрока.
+   * @throws {Error} Если игрок не найден.
+   */
   async searchFaceitAPI(steamId) {
     try {
       const resJson = await this.makeFaceitAPIRequest(
@@ -81,7 +100,9 @@ class FaceitStats {
       );
       const results = resJson.payload.players.results;
 
-      if (results && results.length > 0) return results[0].guid;
+      if (results && results.length > 0) {
+        return results[0].guid;
+      }
     } catch (error) {
       throw new Error(`${this.Messages.faceitApiError[this.getLocale()]}: ${error.message}`);
     }
@@ -89,12 +110,23 @@ class FaceitStats {
     throw new Error(this.Messages.playerNotFound[this.getLocale()]);
   }
 
+  /**
+   * Получает путь к иконке уровня навыка на основе уровня.
+   * @param {string} skillLevel - Уровень навыка.
+   * @returns {string} Путь к иконке.
+   */
   getSkillLevelIconPath(skillLevel) {
     const basePath =
       "https://raw.githubusercontent.com/raizano/FACEIT-Statistics/master/icons/";
     return `${basePath}${skillLevel}-level.svg` || null;
   }
 
+  /**
+   * Получает информацию о игроке Faceit.
+   * @param {string} guid - Faceit GUID игрока.
+   * @returns {Object} Информация о игроке, включая уровень навыка и Elo в CS2.
+   * @throws {Error} Если игрок не найден.
+   */
   async getPlayerInfo(guid) {
     try {
       const responseJson = await this.makeFaceitAPIRequest(
@@ -119,6 +151,12 @@ class FaceitStats {
     }
   }
 
+  /**
+   * Создает DOM-элемент для элемента статистики.
+   * @param {string} text - Текст элемента.
+   * @param {string} iconSrc - Исходный URL иконки элемента.
+   * @returns {HTMLElement} Созданный элемент.
+   */
   createStatsItem(text, iconSrc = null) {
     const statsItem = document.createElement("div");
     statsItem.classList.add("faceit-stats-item");
@@ -145,6 +183,11 @@ class FaceitStats {
     return statsItem;
   }
 
+  /**
+   * Создает блок статистики Faceit и добавляет его на страницу.
+   * @param {string} cs2SkillLevel - Уровень навыка CS2.
+   * @param {string} cs2Elo - Elo CS2.
+   */
   createStatsBlock(cs2SkillLevel, cs2Elo) {
     const statsBlock = document.createElement("div");
     statsBlock.classList.add("faceit-stats");
@@ -176,6 +219,9 @@ class FaceitStats {
     document.querySelector('.responsive_status_info').appendChild(statsBlock);
   }
 
+  /**
+   * Инициирует интеграцию статистики Faceit.
+   */
   async start() {
     try {
       this.addStyles();
@@ -188,6 +234,10 @@ class FaceitStats {
     }
   }
 
+  /**
+   * Обрабатывает ошибки, отображая сообщение об ошибке на странице.
+   * @param {Error} error - Объект ошибки.
+   */
   handleErrors(error) {
     const errorBlock = document.createElement("div");
     errorBlock.classList.add("faceit-error");
@@ -195,12 +245,16 @@ class FaceitStats {
     if (error.message === this.Messages.playerNotFound[this.getLocale()]) {
       errorBlock.textContent = this.Messages.playerNotFound[this.getLocale()];
     } else {
-      errorBlock.textContent = `Error: ${error.message}`;
+      errorBlock.textContent = `Ошибка: ${error.message}`;
     }
 
     document.querySelector('.responsive_status_info').appendChild(errorBlock);
   }
 
+  /**
+   * Получает локаль пользователя.
+   * @returns {string} Локаль пользователя.
+   */
   getLocale() {
     const userLocale = navigator.language.toLowerCase();
     return userLocale.includes("ru") ? "ru" : "en";
@@ -209,4 +263,3 @@ class FaceitStats {
 
 const faceitStats = new FaceitStats();
 faceitStats.start();
-
