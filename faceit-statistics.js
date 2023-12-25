@@ -2,7 +2,7 @@
 // @name         FACEIT Statistics for Steam
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/raizano/FACEIT-Statistics/
-// @version      1.5.2
+// @version      1.5.3
 // @description  Интеграция статистики Faceit в профиль Steam
 // @author       raizano
 // @match        https://steamcommunity.com/*
@@ -19,9 +19,9 @@ class FaceitStats {
   FACEIT_TOKEN_API = "FACEIT_TOKEN_API";
   STYLES = `.faceit-stats {display: flex;flex-direction: column;margin-bottom: 10px;} .faceit-stats-header {font-size: 250%;font-weight: bold;} .faceit-stats-item {font-size: 16px;display: flex;align-items: center;} .faceit-stats-item span {margin-left: 5px;} .faceit-stats-icon {position: relative;top: 3px;} .faceit-stats-icon img {width: 28px;height: 28px;} .faceit-error {background-color: #ffe0e0;padding: 10px;margin-bottom: 10px;border: 1px solid #ff6666;border-radius: 8px;font-family: 'Arial', sans-serif;font-size: 14px;color: #ff3333;}`;
 
-/**
-* Добавим объект Messages в начало класса
-*/
+  /**
+   * Добавим объект Messages в начало класса
+   */
   Messages = {
     playerNotFound: {
       en: "Player not found on Faceit",
@@ -98,8 +98,10 @@ class FaceitStats {
         headers: options.headers || {},
       });
 
+      console.log(`API Response: ${response.responseText}`); // Логирование
       return JSON.parse(response.responseText);
     } catch (error) {
+      console.error(`Error in makeFaceitAPIRequest: ${error.message}`);
       throw new Error(`${this.Messages.faceitApiError[this.getLocale()]}: ${error.message}`);
     }
   }
@@ -122,6 +124,7 @@ class FaceitStats {
         return results[0].guid;
       }
     } catch (error) {
+      console.error(`Error in searchFaceitAPI: ${error.message}`);
       throw new Error(`${this.Messages.faceitApiError[this.getLocale()]}: ${error.message}`);
     }
 
@@ -165,6 +168,7 @@ class FaceitStats {
         cs2Elo: responseJson.games.cs2.faceit_elo,
       };
     } catch (error) {
+      console.error(`Error in getPlayerInfo: ${error.message}`);
       throw new Error(this.Messages.playerNotFound[this.getLocale()]);
     }
   }
@@ -248,6 +252,7 @@ class FaceitStats {
       const playerInfo = await this.getPlayerInfo(guid);
       this.createStatsBlock(playerInfo.cs2SkillLevel, playerInfo.cs2Elo);
     } catch (error) {
+      console.error(`Error in start: ${error.message}`);
       this.handleErrors(error);
     }
   }
