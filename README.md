@@ -1,9 +1,9 @@
 <!-- Ваш заголовок проекта -->
-# Faceit Stats for Steam
+# FACEIT Statistics
 
 ## Описание
 
-Faceit Stats for Steam - это расширение для Tampermonkey, которое интегрирует статистику Faceit в профиль Steam. После установки расширения, пользователи могут видеть статистику Faceit, такую как уровень навыков и рейтинг ELO, непосредственно на странице своего профиля Steam.
+FACEIT Statistics - это расширение для Tampermonkey, которое интегрирует статистику Faceit в профиль Steam. После установки расширения, пользователи могут видеть статистику Faceit, такую как уровень навыков и рейтинг ELO, непосредственно на странице своего профиля Steam.
 
 ## Инструкции по установке
 
@@ -18,7 +18,7 @@ Faceit Stats for Steam - это расширение для Tampermonkey, кот
    - Замените значение переменной `FACEIT_TOKEN_API` в коде скрипта этим токеном.
 
 3. **Установите скрипт:**
-   - Скопируйте код из [репозитория Faceit Stats for Steam](https://github.com/raizano/FACEIT-Statistics/) на GitHub.
+   - Скопируйте код из [репозитория FACEIT-Statistics](https://github.com/raizano/FACEIT-Statistics/) на GitHub.
    - В Tampermonkey создайте новый скрипт и вставьте скопированный код.
    - Сохраните скрипт.
 
