@@ -32,7 +32,7 @@ FACEIT Statistics - это расширение для Tampermonkey, котор�
 
 <div align="center">
   <!-- Изображение, выровненное по центру -->
-  <img src="https://example.com/your-image.png" alt="Your Image">
+  <img src="https://raw.githubusercontent.com/raizano/FACEIT-Statistics/master/icons/screen.png" alt="screenshot">
 </div>
 
 
