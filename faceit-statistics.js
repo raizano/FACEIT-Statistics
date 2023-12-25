@@ -2,7 +2,7 @@
 // @name         FACEIT Statistics for Steam
 // @namespace    http://tampermonkey.net/
 // @homepage     https://github.com/raizano/FACEIT-Statistics/
-// @version      1.5.1
+// @version      1.5.2
 // @description  Интеграция статистики Faceit в профиль Steam
 // @author       raizano
 // @match        https://steamcommunity.com/*
@@ -16,8 +16,26 @@
 class FaceitStats {
   API_SEARCH_URL = "https://api.faceit.com/search/v1/?limit=5&query=";
   API_PLAYER_URL = "https://open.faceit.com/data/v4/players/";
-  FACEIT_TOKEN_API = "FACEIT_TOKEN_API"; 
+  FACEIT_TOKEN_API = "FACEIT_TOKEN_API";
   STYLES = `.faceit-stats {display: flex;flex-direction: column;margin-bottom: 10px;} .faceit-stats-header {font-size: 250%;font-weight: bold;} .faceit-stats-item {font-size: 16px;display: flex;align-items: center;} .faceit-stats-item span {margin-left: 5px;} .faceit-stats-icon {position: relative;top: 3px;} .faceit-stats-icon img {width: 28px;height: 28px;} .faceit-error {background-color: #ffe0e0;padding: 10px;margin-bottom: 10px;border: 1px solid #ff6666;border-radius: 8px;font-family: 'Arial', sans-serif;font-size: 14px;color: #ff3333;}`;
+
+/**
+* Добавим объект Messages в начало класса
+*/
+  Messages = {
+    playerNotFound: {
+      en: "Player not found on Faceit",
+      ru: "Игрок не найден на Faceit",
+    },
+    steamIdError: {
+      en: "Error getting Steam ID from the page.",
+      ru: "Ошибка получения Steam ID со страницы.",
+    },
+    faceitApiError: {
+      en: "Error executing Faceit API request",
+      ru: "Ошибка выполнения запроса к Faceit API",
+    },
+  };
 
   /**
    * Добавляет необходимые стили для статистики Faceit на страницу.
