@@ -18,7 +18,7 @@ FACEIT Statistics - это расширение для Tampermonkey, котор�
    - Замените значение переменной `FACEIT_TOKEN_API` в коде скрипта этим токеном.
 
 3. **Установите скрипт:**
-   - Скопируйте код из [репозитория FACEIT-Statistics]([https://github.com/raizano/FACEIT-Statistics/](https://github.com/raizano/FACEIT-Statistics/blob/main/faceit-statistics.js)) на GitHub.
+   - Скопируйте код из [репозитория FACEIT-Statistics](https://github.com/raizano/FACEIT-Statistics/blob/main/faceit-statistics.js) на GitHub.
    - В Tampermonkey создайте новый скрипт и вставьте скопированный код.
    - Сохраните скрипт.
 
