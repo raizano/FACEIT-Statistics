@@ -28,7 +28,7 @@ FACEIT Statistics is a Tampermonkey extension that integrates CS2 Faceit statist
    - Save the script.
 
 <details>
-  <summary>Click for Additional Project Information</summary>
+  <summary>▸ Click</summary>
   
   <!-- Additional project information -->
   What are we peeking at? :)
@@ -61,7 +61,7 @@ FACEIT Statistics - это расширение для Tampermonkey, котор�
    - Сохраните скрипт.
 
 <details>
-  <summary>Тык для дополнительной информации о проекте</summary>
+  <summary>▸ Тык</summary>
   
   <!-- Дополнительная информация о проекте -->
   шо подглядываем? :)
