@@ -1,6 +1,11 @@
 <!-- Your project title -->
 # FACEIT Statistics
 
+<div align="center">
+  <!-- Center-aligned image -->
+  <img src="https://raw.githubusercontent.com/raizano/FACEIT-Statistics/master/icons/screen.png" alt="screenshot">
+</div>
+
 ## Description
 
 FACEIT Statistics is a Tampermonkey extension that integrates CS2 Faceit statistics into a Steam profile. After installing the extension, users can view Faceit statistics, such as skill level and ELO rating, directly on their Steam profile page.
@@ -30,22 +35,13 @@ FACEIT Statistics is a Tampermonkey extension that integrates CS2 Faceit statist
 
 </details>
 
-<div align="center">
-  <!-- Center-aligned image -->
-  <img src="https://raw.githubusercontent.com/raizano/FACEIT-Statistics/master/icons/screen.png" alt="screenshot">
-</div>
-
-## License
-
-This project is licensed under the [GNU License](LICENSE).
-
 ---
 
-## Русская версия
+## RU
 
 ## Описание
 
-Статистика FACEIT - это расширение для Tampermonkey, которое интегрирует статистику CS2 Faceit в профиль Steam. После установки расширения пользователи могут видеть статистику Faceit, такую как уровень навыков и рейтинг ELO, непосредственно на странице своего профиля Steam.
+FACEIT Statistics - это расширение для Tampermonkey, которое интегрирует статистику CS2 Faceit в профиль Steam. После установки расширения пользователи могут видеть статистику Faceit, такую как уровень навыков и рейтинг ELO, непосредственно на странице своего профиля Steam.
 
 ## Инструкции по установке
 
@@ -68,14 +64,9 @@ This project is licensed under the [GNU License](LICENSE).
   <summary>Тык для дополнительной информации о проекте</summary>
   
   <!-- Дополнительная информация о проекте -->
-  Что мы тут подсматриваем? :)
+  шо подглядываем? :)
 
 </details>
-
-<div align="center">
-  <!-- Изображение, выровненное по центру -->
-  <img src="https://raw.githubusercontent.com/raizano/FACEIT-Statistics/master/icons/screen.png" alt="screenshot">
-</div>
 
 ## Лицензия
 
