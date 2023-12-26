@@ -19,7 +19,7 @@ FACEIT Statistics is a Tampermonkey extension that integrates CS2 Faceit statist
    - Go to the [official Faceit Developer website](https://developers.faceit.com/).
    - Sign up or log in to your Faceit account.
    - After logging in, go to the "API" section.
-   - Create a new API token and copy its value.
+   - Create a new API token and copy its value. Or use the test token `b31fa1dd-2a60-40ba-885e-bdafbbf2d0a3`
    - Replace the value of the `FACEIT_TOKEN_API` variable in the script code with this token.
 
 3. **Install the script:**
@@ -52,7 +52,7 @@ FACEIT Statistics - это расширение для Tampermonkey, котор�
    - Перейдите на [официальный сайт Faceit Developer](https://developers.faceit.com/).
    - Зарегистрируйтесь или войдите в свой аккаунт Faceit.
    - После входа в аккаунт, перейдите в раздел "API".
-   - Создайте новый API-токен и скопируйте его значение.
+   - Создайте новый API-токен и скопируйте его значение. Или используй тестовый токен `b31fa1dd-2a60-40ba-885e-bdafbbf2d0a3`
    - Замените значение переменной `FACEIT_TOKEN_API` в коде скрипта этим токеном.
 
 3. **Установите скрипт:**
