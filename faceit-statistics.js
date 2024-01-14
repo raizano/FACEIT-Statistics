@@ -68,69 +68,70 @@ class FaceitStatistics {
         }
     }
 
-async getGuid(steamId) {
-    try {
-        const resJson = await this.makeRequest(
-            `${this.API_SEARCH_URL}${steamId}`,
-            {}
-        );
-
-        const players = resJson.payload.players.results;
-
-        // Попытка найти игрока со статусом "AVAILABLE"
-        const availablePlayer = players.find(player => player.status === "AVAILABLE");
-
-        // Если не найдено, возвращаем GUID первого игрока (если массив не пустой)
-        if (availablePlayer) {
-            return availablePlayer.guid;
-        } else if (players.length > 0) {
-            return players[0].guid;
-        }
-    } catch (error) {
-        console.error(`Error in getGuid: ${error.message}`);
-        throw new Error(`${this.Messages[this.getLocale()].requestApiError}: ${error.message}`);
-    }
-    throw new Error(this.Messages[this.getLocale()].playerNotFound);
-}
-
-async fetchPlayerData(url, game) {
-    try {
-        return await this.makeRequest(url, { headers: { Authorization: `Bearer ${this.FACEIT_TOKEN_API}` } });
-    } catch (error) {
-        console.error(`Error in fetchPlayerData (${game}): ${error.message}`);
-        throw error;
-    }
-}
-
-async getPlayerInfo(guid) {
-    try {
-        const [userInfo, cs2Stats, csgoStats] = await Promise.all([
-            this.fetchPlayerData(`${this.API_PLAYER_URL}${guid}`, null),
-            this.fetchPlayerData(`${this.API_PLAYER_URL}${guid}/stats/cs2`),
-            this.fetchPlayerData(`${this.API_PLAYER_URL}${guid}/stats/csgo`)
-        ]);
-        const gameStats = (stats, game) => {
-            if (stats && stats.lifetime) {
-                return {
-                    cs2SkillLevel: userInfo.games[game].skill_level,
-                    cs2Elo: userInfo.games[game].faceit_elo,
-                    Matches: stats.lifetime.Matches,
-                    WinRate: stats.lifetime["Win Rate %"],
-                    AverageKillDeathRatio: stats.lifetime["Average K/D Ratio"],
-                    AverageHeadshots: stats.lifetime["Average Headshots %"]
-                };
+    async getGuid(steamId) {
+        try {
+            const resJson = await this.makeRequest(
+                `${this.API_SEARCH_URL}${steamId}`,
+                {}
+            );
+    
+            const players = resJson.payload.players.results;
+    
+            // Попытка найти игрока со статусом "AVAILABLE"
+            const availablePlayer = players.find(player => player.status === "AVAILABLE");
+    
+            // Если не найдено, возвращаем GUID первого игрока (если массив не пустой)
+            if (availablePlayer) {
+                return availablePlayer.guid;
+            } else if (players.length > 0) {
+                return players[0].guid;
             }
-        };
-
-        const cs2Info = gameStats(cs2Stats, 'cs2');
-        const csgoInfo = gameStats(csgoStats, 'csgo');
-
-        return cs2Info || csgoInfo || null;
-    } catch (error) {
-        console.error(`Error in getPlayerInfo: ${error.message}`);
+        } catch (error) {
+            console.error(`Error in getGuid: ${error.message}`);
+            throw new Error(`${this.Messages[this.getLocale()].requestApiError}: ${error.message}`);
+        }
         throw new Error(this.Messages[this.getLocale()].playerNotFound);
     }
-}
+
+    async fetchPlayerData(url, game) {
+        try {
+            return await this.makeRequest(url, { headers: { Authorization: `Bearer ${this.FACEIT_TOKEN_API}` } });
+        } catch (error) {
+            console.error(`Error in fetchPlayerData (${game}): ${error.message}`);
+            throw error;
+        }
+    }
+    
+    async getPlayerInfo(guid) {
+        try {
+            const [userInfo, cs2Stats, csgoStats] = await Promise.all([
+                this.fetchPlayerData(`${this.API_PLAYER_URL}${guid}`, null),
+                this.fetchPlayerData(`${this.API_PLAYER_URL}${guid}/stats/cs2`),
+                this.fetchPlayerData(`${this.API_PLAYER_URL}${guid}/stats/csgo`)
+            ]);
+            const gameStats = (stats, game) => {
+                if (stats && stats.lifetime) {
+                    return {
+                        cs2SkillLevel: userInfo.games[game].skill_level,
+                        cs2Elo: userInfo.games[game].faceit_elo,
+                        Matches: stats.lifetime.Matches,
+                        WinRate: stats.lifetime["Win Rate %"],
+                        AverageKillDeathRatio: stats.lifetime["Average K/D Ratio"],
+                        AverageHeadshots: stats.lifetime["Average Headshots %"]
+                    };
+                }
+            };
+    
+            const cs2Info = gameStats(cs2Stats, 'cs2');
+            const csgoInfo = gameStats(csgoStats, 'csgo');
+    
+            return cs2Info || csgoInfo || null;
+        } catch (error) {
+            console.error(`Error in getPlayerInfo: ${error.message}`);
+            throw new Error(this.Messages[this.getLocale()].playerNotFound);
+        }
+    }
+    
     getSkillLevelIconPath(skillLevel) {
         const basePath =
             "https://raw.githubusercontent.com/raizano/FACEIT-Statistics/master/icons/";
