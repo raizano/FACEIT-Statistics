@@ -64,7 +64,7 @@ async makeRequest(url, options) {
             },
             onerror: (error) => {
                 console.error(`Error in makeFaceitAPIRequest: ${error.message}`);
-                reject(new Error(`${this.Messages.faceitApiError[this.getLocale()]}: ${error.message}`));
+                reject(new Error(`${this.Messages[this.getLocale()].faceitApiError}: ${error.message}`));
             },
         });
     });
