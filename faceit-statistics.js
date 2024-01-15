@@ -52,21 +52,24 @@ class FaceitStatistics {
         return steamId;
     }
 
-    async makeRequest(url, options) {
-        try {
-            const response = await GM.xmlHttpRequest({
-                method: options.method || "GET",
-                url: url,
-                headers: options.headers || {},
-            });
+async makeRequest(url, options) {
+    return new Promise((resolve, reject) => {
+        GM.xmlHttpRequest({
+            method: options.method || "GET",
+            url: url,
+            headers: options.headers || {},
+            onload: (response) => {
+                console.log(`API Response: ${response.responseText}`); // Логирование
+                resolve(JSON.parse(response.responseText));
+            },
+            onerror: (error) => {
+                console.error(`Error in makeFaceitAPIRequest: ${error.message}`);
+                reject(new Error(`${this.Messages.faceitApiError[this.getLocale()]}: ${error.message}`));
+            },
+        });
+    });
+}
 
-            console.log(`API Response: ${response.responseText}`);
-            return JSON.parse(response.responseText);
-        } catch (error) {
-            console.error(`Error in makeRequest: ${error.message}`);
-            throw new Error(`${this.Messages[this.getLocale()].requestApiError}: ${error.message}`);
-        }
-    }
 
     async getGuid(steamId) {
         try {
@@ -74,12 +77,12 @@ class FaceitStatistics {
                 `${this.API_SEARCH_URL}${steamId}`,
                 {}
             );
-    
+
             const players = resJson.payload.players.results;
-    
+
             // Попытка найти игрока со статусом "AVAILABLE"
             const availablePlayer = players.find(player => player.status === "AVAILABLE");
-    
+
             // Если не найдено, возвращаем GUID первого игрока (если массив не пустой)
             if (availablePlayer) {
                 return availablePlayer.guid;
@@ -101,7 +104,7 @@ class FaceitStatistics {
             throw error;
         }
     }
-    
+
     async getPlayerInfo(guid) {
         try {
             const [userInfo, cs2Stats, csgoStats] = await Promise.all([
@@ -121,17 +124,17 @@ class FaceitStatistics {
                     };
                 }
             };
-    
+
             const cs2Info = gameStats(cs2Stats, 'cs2');
             const csgoInfo = gameStats(csgoStats, 'csgo');
-    
+
             return cs2Info || csgoInfo || null;
         } catch (error) {
             console.error(`Error in getPlayerInfo: ${error.message}`);
             throw new Error(this.Messages[this.getLocale()].playerNotFound);
         }
     }
-    
+
     getSkillLevelIconPath(skillLevel) {
         const basePath =
             "https://raw.githubusercontent.com/raizano/FACEIT-Statistics/master/icons/";
@@ -159,7 +162,7 @@ class FaceitStatistics {
         const statsItem = this.createElement('div', 'faceit-stats-item');
         const textContainer = this.createElement('span');
         textContainer.appendChild(document.createTextNode(text));
-    
+
         if (iconSrc) {
             const iconContainer = this.createElement('span', 'faceit-stats-icon');
             const iconImg = this.createElement('img');
@@ -169,7 +172,7 @@ class FaceitStatistics {
         } else {
             statsItem.appendChild(textContainer);
         }
-    
+
         return statsItem;
     }
 
